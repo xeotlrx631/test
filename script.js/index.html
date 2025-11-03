@@ -1,0 +1,35 @@
+// script.js
+
+document.addEventListener('DOMContentLoaded', () => {
+    // 모바일 메뉴 토글
+    const menuToggle = document.querySelector('.menu-toggle');
+    const nav = document.querySelector('nav');
+
+    if (menuToggle && nav) {
+        menuToggle.addEventListener('click', () => {
+            nav.classList.toggle('active');
+        });
+    }
+
+    // 현재 페이지 활성화 (내비게이션 링크 강조)
+    const currentPath = window.location.pathname;
+    const navLinks = document.querySelectorAll('nav ul li a');
+
+    navLinks.forEach(link => {
+        // GitHub Pages의 서브 디렉토리 구조를 고려
+        const linkPath = new URL(link.href).pathname;
+
+        // 예: /test/ 와 /test/index.html 모두 메인으로 처리
+        // /test/about/ 와 /test/about/index.html 모두 about으로 처리
+        const cleanCurrentPath = currentPath.endsWith('/') ? currentPath : currentPath + '/';
+        const cleanLinkPath = linkPath.endsWith('/') ? linkPath : linkPath + '/';
+
+        if (cleanCurrentPath === cleanLinkPath ||
+            (currentPath === '/test/index.html' && linkPath === '/test/') ||
+            (currentPath === '/test/' && linkPath === '/test/index.html')) {
+            link.classList.add('active');
+        } else if (cleanCurrentPath.includes(cleanLinkPath) && cleanLinkPath !== '/test/') {
+             link.classList.add('active');
+        }
+    });
+});
